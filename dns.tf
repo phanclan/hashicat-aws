@@ -1,4 +1,4 @@
-resource "aws_route53_record" "hashi-bastion" {
+resource "aws_route53_record" "hashicat" {
   zone_id = var.zone_id
   name    = "hashicat"
   type    = "CNAME"
@@ -10,6 +10,6 @@ variable "zone_id" {
   default = "Z1SE34SEPQ6H86"
 }
 
-output "hashi_bastion" {
-  value = aws_route53_record.hashi-bastion.fqdn
+output "hashicat_dns" {
+  value = aws_route53_record.hashicat.fqdn
 }
