@@ -10,3 +10,6 @@ variable "zone_id" {
   default = "Z1SE34SEPQ6H86"
 }
 
+output "hashi_bastion" {
+  value = aws_route53_record.hashi-bastion.fqdn
+}
