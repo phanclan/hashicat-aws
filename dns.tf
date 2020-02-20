@@ -11,5 +11,23 @@ variable "zone_id" {
 }
 
 output "hashicat_dns" {
-  value = aws_route53_record.hashicat.fqdn
+  value = "http://${aws_route53_record.hashicat.fqdn}"
+}
+
+#-------------------------------------------------------------------------------
+# DATA SOURCE FOR AMI - hashistack
+#-------------------------------------------------------------------------------
+
+data "aws_ami" "hashistack" {
+  most_recent = true
+  owners      = ["self"]
+  filter {
+    name   = "name"
+    values = [var.ami]
+  }
+}
+
+variable "ami" {
+  default     = "pphan*"
+  description = "AMI for hashistack instances"
 }
