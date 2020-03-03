@@ -120,6 +120,8 @@ resource aws_instance "hashicat" {
   #   Name = "${var.prefix}-hashicat-instance"
   #   Billable = true
   #   Department = "devops"
+  #   TTL = "72hrs"
+  #   Owner = "pphan@hashicorp.com"
   # }
 }
 
