@@ -109,7 +109,7 @@ data aws_ami "ubuntu" {
 }
 
 resource aws_instance "hashicat" {
-  ami                         = data.aws_ami.hashistack.id
+  # ami                         = data.aws_ami.hashistack.id
   instance_type               = var.instance_type
   key_name                    = aws_key_pair.hashicat.key_name
   associate_public_ip_address = true
