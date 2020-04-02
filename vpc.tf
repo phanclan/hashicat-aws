@@ -1,5 +1,5 @@
 module "vpc" {
-  source  = "app.terraform.io/pphan-sandbox/vpc/aws"
+  source  = "app.terraform.io/pphan/vpc/aws"
   version = "2.21.0"
 
   database_subnet_assign_ipv6_address_on_creation = "false"
