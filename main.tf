@@ -8,7 +8,7 @@ resource aws_vpc "hashicat" {
   enable_dns_hostnames = true
 
   tags = {
-    Name = "${var.prefix}-vpc"
+    name = "${var.prefix}-vpc"
   }
 }
 
@@ -61,7 +61,7 @@ resource aws_security_group "hashicat" {
 }
 
 resource random_id "app-server-id" {
-  prefix = "${var.prefix}-hashicat-"
+  prefix      = "${var.prefix}-hashicat-"
   byte_length = 8
 }
 
@@ -95,7 +95,7 @@ data aws_ami "ubuntu" {
   most_recent = true
 
   filter {
-    name   = "name"
+    name = "name"
     #values = ["ubuntu/images/hvm-ssd/ubuntu-disco-19.04-amd64-server-*"]
     values = ["ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-*"]
   }
@@ -106,6 +106,16 @@ data aws_ami "ubuntu" {
   }
 
   owners = ["099720109477"] # Canonical
+}
+
+resource "aws_eip" "hashicat" {
+  instance = aws_instance.hashicat.id
+  vpc      = true
+}
+
+resource "aws_eip_association" "hashicat" {
+  instance_id   = aws_instance.hashicat.id
+  allocation_id = aws_eip.hashicat.id
 }
 
 resource aws_instance "hashicat" {
@@ -139,19 +149,12 @@ resource aws_instance "hashicat" {
 # Add execute permissions to our scripts.
 # Run the deploy_app.sh script.
 resource "null_resource" "configure-cat-app" {
-  depends_on = [
-    aws_instance.hashicat,
-  ]
+  depends_on = [aws_eip_association.hashicat]
 
-  # Terraform 0.11
-  # triggers {
-  #   build_number = "${timestamp()}"
-  # }
-
-  # Terraform 0.12
   triggers = {
     build_number = timestamp()
   }
+
   provisioner "file" {
     source      = "files/"
     destination = "/home/ubuntu/"
@@ -160,9 +163,10 @@ resource "null_resource" "configure-cat-app" {
       type        = "ssh"
       user        = "ubuntu"
       private_key = tls_private_key.hashicat.private_key_pem
-      host        = aws_instance.hashicat.public_ip
+      host        = aws_eip.hashicat.public_ip
     }
   }
+
   provisioner "remote-exec" {
     inline = [
       # "sudo add-apt-repository universe",
@@ -178,7 +182,7 @@ resource "null_resource" "configure-cat-app" {
       type        = "ssh"
       user        = "ubuntu"
       private_key = tls_private_key.hashicat.private_key_pem
-      host        = aws_instance.hashicat.public_ip
+      host        = aws_eip.hashicat.public_ip
     }
   }
 }
