@@ -5,10 +5,6 @@ provider "aws" {
 variable "deploy_env" {
   type = list(string)
   default = ["prod", "qa", "dev"]
-  # validation {
-  #   condition     = can(regex("^ami-", var.deploy_env))
-  #   error_message = "The image_id value must be start with \"ami-\"."
-  # }
 }
 
 # Module level count argument and depends_on vpc module.
