@@ -14,8 +14,8 @@ locals {
   region          = "us-west-2"
   spot_price      = "0.20"
   instance_type   = "m5.large"
-  userarn = "arn:aws:iam::753646501470:user/pphan"
-  username = "pphan"
+  userarn         = "arn:aws:iam::753646501470:user/pphan"
+  username        = "pphan"
 
   resources = {
     pp-wg-prod = "phan-prod-eks"

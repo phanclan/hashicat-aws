@@ -6,7 +6,7 @@ output "cluster_endpoint" {
 output "cluster_name" {
   description = "Kubernetes Cluster Name"
   # value       = local.cluster_name
-  value       = module.eks-cluster["pp-wg-prod"].cluster_id
+  value = module.eks-cluster["pp-wg-prod"].cluster_id
 }
 
 output "cluster_security_group_id" {

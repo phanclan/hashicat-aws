@@ -7,6 +7,7 @@ resource "aws_route53_record" "hashicat" {
 }
 
 variable "zone_id" {
+  description = "Hosted zone ID"
   default = "Z1SE34SEPQ6H86"
 }
 
