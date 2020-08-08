@@ -4,4 +4,4 @@
 
 prefix = "pphan"
 region = "us-west-2"
-zone_id = "Z0608326WWMXX1CWG73X"
+zone_id = "Z052992639K3KDLE5K6FS"
