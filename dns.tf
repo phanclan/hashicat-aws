@@ -1,3 +1,7 @@
+data "aws_route53_zone" "main" {
+  name = var.hosted-zone
+}
+
 resource "aws_route53_record" "hashicat" {
   zone_id = var.zone_id
   name    = "hashicat"
