@@ -6,7 +6,8 @@ resource "aws_route53_record" "hashicat" {
   zone_id = var.zone_id
   name    = "hashicat"
   type    = "CNAME"
-  records = [aws_instance.hashicat.public_dns]
+  records = [aws_eip.hashicat.public_dns]
+  # records = [aws_instance.hashicat.public_dns]
   ttl     = "300"
 }
 

@@ -52,3 +52,6 @@ variable "placeholder" {
   # default     = "placedog.net"
   description = "Image-as-a-service URL. Some other fun ones to try are placekitten.com, placedog.net, fillmurray.com, placecage.com, placebeard.it, loremflickr.com, baconmockup.com, placeimg.com, placebear.com, placeskull.com, stevensegallery.com"
 }
+variable "hosted-zone" {
+  description = "The name of the dns zone on Route 53 that will be used as the master zone "
+}
