@@ -3,18 +3,12 @@ data "aws_route53_zone" "this" {
 }
 
 resource "aws_route53_record" "hashicat" {
-  # zone_id = var.zone_id
   zone_id = data.aws_route53_zone.this.zone_id
   name    = "hashicat"
   type    = "CNAME"
   records = [aws_eip.hashicat.public_dns]
   # records = [aws_instance.hashicat.public_dns]
   ttl     = "300"
-}
-
-variable "zone_id" {
-  description = "Hosted zone ID"
-  # default = "Z1SE34SEPQ6H86"
 }
 
 output "hashicat_dns" {
