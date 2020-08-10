@@ -1,9 +1,10 @@
-data "aws_route53_zone" "main" {
+data "aws_route53_zone" "this" {
   name = var.hosted-zone
 }
 
 resource "aws_route53_record" "hashicat" {
-  zone_id = var.zone_id
+  # zone_id = var.zone_id
+  zone_id = data.aws_route53_zone.this.zone_id
   name    = "hashicat"
   type    = "CNAME"
   records = [aws_eip.hashicat.public_dns]
