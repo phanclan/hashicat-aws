@@ -26,8 +26,8 @@ variable "subnet_prefix" {
 
 variable "instance_type" {
   description = "Specifies the AWS instance type."
-  default     = "t3.medium" # t3.medium
-  #  default     = "t3.large"
+  #default     = "t3.medium" # t3.medium
+    default     = "t3.large"
 }
 
 variable "admin_username" {
@@ -48,8 +48,8 @@ variable "width" {
 }
 
 variable "placeholder" {
-  default     = "placekitten.com" #default
-  # default     = "placedog.net"
+  #default     = "placekitten.com" #default
+  default     = "placedog.net"
   description = "Image-as-a-service URL. Some other fun ones to try are placekitten.com, placedog.net, fillmurray.com, placecage.com, placebeard.it, loremflickr.com, baconmockup.com, placeimg.com, placebear.com, placeskull.com, stevensegallery.com"
 }
 variable "hosted-zone" {
