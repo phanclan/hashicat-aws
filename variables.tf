@@ -27,7 +27,7 @@ variable "subnet_prefix" {
 variable "instance_type" {
   description = "Specifies the AWS instance type."
   #default     = "t3.medium" # t3.medium
-  default     = "t3.large"
+  default = "t3.large"
 }
 
 variable "admin_username" {
@@ -36,13 +36,13 @@ variable "admin_username" {
 }
 
 variable "height" {
-  default     = "400" # default
+  default = "400" # default
   # default     = "600"
   description = "Image height in pixels."
 }
 
 variable "width" {
-  default     = "600" #default
+  default = "600" #default
   # default     = "800"
   description = "Image width in pixels."
 }

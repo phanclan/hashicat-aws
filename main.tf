@@ -1,4 +1,4 @@
-resource aws_vpc "hashicat" {
+resource "aws_vpc" "hashicat" {
   cidr_block           = var.address_space
   enable_dns_hostnames = true
 
@@ -8,7 +8,7 @@ resource aws_vpc "hashicat" {
 }
 #deleteme
 
-resource aws_subnet "hashicat" {
+resource "aws_subnet" "hashicat" {
   vpc_id     = aws_vpc.hashicat.id
   cidr_block = var.subnet_prefix
 
@@ -17,7 +17,7 @@ resource aws_subnet "hashicat" {
   }
 }
 
-resource aws_security_group "hashicat" {
+resource "aws_security_group" "hashicat" {
   name = "${var.prefix}-security-group"
 
   vpc_id = aws_vpc.hashicat.id
@@ -56,12 +56,12 @@ resource aws_security_group "hashicat" {
   }
 }
 
-resource random_id "app-server-id" {
+resource "random_id" "app-server-id" {
   prefix      = "${var.prefix}-hashicat-"
   byte_length = 8
 }
 
-resource aws_internet_gateway "hashicat" {
+resource "aws_internet_gateway" "hashicat" {
   vpc_id = aws_vpc.hashicat.id
 
   tags = {
@@ -69,7 +69,7 @@ resource aws_internet_gateway "hashicat" {
   }
 }
 
-resource aws_route_table "hashicat" {
+resource "aws_route_table" "hashicat" {
   vpc_id = aws_vpc.hashicat.id
 
   route {
@@ -78,7 +78,7 @@ resource aws_route_table "hashicat" {
   }
 }
 
-resource aws_route_table_association "hashicat" {
+resource "aws_route_table_association" "hashicat" {
   subnet_id      = aws_subnet.hashicat.id
   route_table_id = aws_route_table.hashicat.id
 }
@@ -87,7 +87,7 @@ resource aws_route_table_association "hashicat" {
 # EC2 INSTANCE
 #-------------------------------------------------------------------------------
 
-data aws_ami "ubuntu" {
+data "aws_ami" "ubuntu" {
   most_recent = true
 
   filter {
@@ -114,7 +114,7 @@ resource "aws_eip_association" "hashicat" {
   allocation_id = aws_eip.hashicat.id
 }
 
-resource aws_instance "hashicat" {
+resource "aws_instance" "hashicat" {
   # ami                         = data.aws_ami.hashistack.id
   ami                         = data.aws_ami.ubuntu.id
   instance_type               = var.instance_type
@@ -124,13 +124,13 @@ resource aws_instance "hashicat" {
   vpc_security_group_ids      = [aws_security_group.hashicat.id]
 
   tags = {
-    Owner = "phan@hashicorp.com"
-    Region = "NA-NORCAL-ENT"
+    Owner   = "phan@hashicorp.com"
+    Region  = "NA-NORCAL-ENT"
     Purpose = "Demo TF"
-    TTL = "8" #hours
-  #   Name = "${var.prefix}-hashicat-instance"
-  #   Billable = true
-  #   Department = "devops"
+    TTL     = "8" #hours
+    #   Name = "${var.prefix}-hashicat-instance"
+    #   Billable = true
+    #   Department = "devops"
   }
 }
 
@@ -185,7 +185,7 @@ resource "null_resource" "configure-cat-app" {
   }
 }
 
-resource tls_private_key "hashicat" {
+resource "tls_private_key" "hashicat" {
   algorithm = "RSA"
 }
 
@@ -193,7 +193,7 @@ locals {
   private_key_filename = "${var.prefix}-ssh-key-hashicat.pem"
 }
 
-resource aws_key_pair "hashicat" {
+resource "aws_key_pair" "hashicat" {
   key_name   = local.private_key_filename
   public_key = tls_private_key.hashicat.public_key_openssh
 }
