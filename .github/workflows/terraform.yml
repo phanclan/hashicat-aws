@@ -1,7 +1,7 @@
 # Define the name of the Actions workflow — Terraform.
 name: "Terraform"
 
-# Only run when a commit is pushed to the master branch or on any pull requests.
+# Run when a commit is pushed to the master branch or on any pull requests.
 on:
   push:
     branches:
@@ -10,13 +10,16 @@ on:
 
 # Defines a terraform job with 8 steps.
 jobs:
+  # Set job key. Key is job name if job name is not provided.
   terraform:
+    # Name the job.
     name: "Terraform"
-    # Virtual environment OS.
+    # Set the type of machine to run on.
     runs-on: ubuntu-latest
     # runs-on: self-hosted
+
     steps:
-      # Checkout the repo to the GitHub Actions runner
+      # Check out repo on runner
       - name: Checkout
         uses: actions/checkout@v2
 
@@ -30,6 +33,16 @@ jobs:
           cli_config_credentials_hostname: 'app.terraform.io'
           # TF_API_TOKEN stored as GitHub Secret
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+      # Run Linter against code base #
+      - name: Lint Code Base
+        uses: github/super-linter@v3
+        env:
+          VALIDATE_ALL_CODEBASE: false
+          DEFAULT_BRANCH: master
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_ANSIBLE: true
+          VALIDATE_TERRAFORM: true
 
       # Checks that all Terraform configuration files adhere to a canonical format
       - name: Terraform Format
@@ -71,9 +84,13 @@ jobs:
             const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
             #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
             #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+
             <details><summary>Show Plan</summary>
+
             \`\`\`${process.env.PLAN}\`\`\`
+
             </details>
+
             *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
 
             github.issues.createComment({
