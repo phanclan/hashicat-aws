@@ -37,12 +37,13 @@ jobs:
       # Run Linter against code base #
       - name: Lint Code Base
         uses: github/super-linter@v3
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
         env:
           VALIDATE_ALL_CODEBASE: false
           DEFAULT_BRANCH: master
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VALIDATE_ANSIBLE: true
-          VALIDATE_TERRAFORM: true
+          # VALIDATE_ANSIBLE: true
+          # VALIDATE_TERRAFORM: true
 
       # Checks that all Terraform configuration files adhere to a canonical format
       - name: Terraform Format
